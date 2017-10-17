@@ -166,6 +166,11 @@ var contract = (function(module) {
                   if (err) return reject(err);
 
                   if (receipt != null) {
+                    // check status from byzantium fork
+                    if (receipt.status === 0) {
+                      // emulate old behavior
+                      return reject(new Error("invalid opcode"));
+                    }
                     return accept({
                       tx: tx,
                       receipt: receipt,
