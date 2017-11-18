@@ -91,6 +91,33 @@ describe("Abstractions", function() {
       assert.equal(value.valueOf(), 5, "Ending value should be five");
     }).then(done).catch(done);
   });
+  
+  it("should call overloaded methods", function(done) {
+    var example;
+    Example.new({gas: 3141592}).then(function(instance) {
+      example = instance;
+      return example.setValueOverload["uint256,uint256"](5, 5);
+    }).then(function(tx) {
+      return example.value.call();      
+    }).then(function(value) {
+      assert.equal(value.valueOf(), 10, "Sum value should be 10");
+      return example.setValueOverload["uint256"](7);      
+    }).then(function(tx) {
+      return example.value.call();
+    }).then(function(value) {
+      assert.equal(value.valueOf(), 7, "Single value should be 7");
+      return example.setValueOverload["uint256,uint256,uint256"](3,3,5);
+    }).then(function(tx) {
+      return example.value.call();
+    }).then(function(value) {
+      assert.equal(value.valueOf(), 11, "Triple sum value should be 11");
+      return example.setValueOverload(3);
+    }).then(function(tx) {
+      return example.value.call();
+    }).then(function(value) {
+      assert.equal(value.valueOf(), 3, "Default overload value should be 3");
+    }).then(done).catch(done);
+  });
 
   it("shouldn't synchronize constant functions", function(done) {
     var example;
