@@ -28,6 +28,18 @@ contract Example {
   function triggerEvent() {
     ExampleEvent(msg.sender, 8);
   }
+  
+  function setValueOverload(uint val) {
+    value = val;
+  }
+  
+  function setValueOverload(uint part1, uint part2) {
+    value = part1 + part2;
+  }
+  
+  function setValueOverload(uint part1, uint part2, uint part3) {
+    value = part1 + part2 + part3;
+  }
 
   function() payable {
     fallbackTriggered = true;
